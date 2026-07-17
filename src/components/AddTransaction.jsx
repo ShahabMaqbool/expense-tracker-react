@@ -1,39 +1,46 @@
 import { useState } from "react";
+import "./AddTransaction.css";
 
 function AddTransaction({ addTransaction }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
+  const [type, setType] = useState("income");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (title === "" || amount === "") return;
+    if (title.trim() === "" || amount === "") {
+      alert("Please fill all fields.");
+      return;
+    }
 
     const transaction = {
       title,
-      amount: Number(amount),
+      amount:
+        type === "expense"
+          ? -Math.abs(Number(amount))
+          : Math.abs(Number(amount)),
     };
 
     addTransaction(transaction);
 
     setTitle("");
     setAmount("");
+    setType("income");
   };
 
   return (
-    <div>
+    <div className="transaction-form">
       <h3>Add New Transaction</h3>
 
       <form onSubmit={handleSubmit}>
+
         <input
           type="text"
           placeholder="Enter Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-
-        <br />
-        <br />
 
         <input
           type="number"
@@ -42,10 +49,32 @@ function AddTransaction({ addTransaction }) {
           onChange={(e) => setAmount(e.target.value)}
         />
 
-        <br />
-        <br />
+        <div className="radio-group">
+          <label>
+            <input
+              type="radio"
+              value="income"
+              checked={type === "income"}
+              onChange={(e) => setType(e.target.value)}
+            />
+            Income
+          </label>
 
-        <button>Add Transaction</button>
+          <label>
+            <input
+              type="radio"
+              value="expense"
+              checked={type === "expense"}
+              onChange={(e) => setType(e.target.value)}
+            />
+            Expense
+          </label>
+        </div>
+
+        <button type="submit">
+          Add Transaction
+        </button>
+
       </form>
     </div>
   );
