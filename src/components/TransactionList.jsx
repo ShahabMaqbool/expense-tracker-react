@@ -31,24 +31,25 @@ function TransactionList({
               : "expense-item"
           }`}
         >
-          {/* Left Section */}
-
+          {/* Left Side */}
           <div className="transaction-left">
             <h4>{transaction.title}</h4>
 
             <div className="transaction-meta">
               <span className="category-badge">
-                {transaction.category}
+                📂 {transaction.category}
               </span>
 
               <span className="transaction-date">
-                📅 {transaction.date}
+                📅{" "}
+                {new Date(transaction.date).toLocaleDateString(
+                  "en-GB"
+                )}
               </span>
             </div>
           </div>
 
-          {/* Right Section */}
-
+          {/* Right Side */}
           <div className="transaction-right">
             <h3
               className={
