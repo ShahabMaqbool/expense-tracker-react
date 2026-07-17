@@ -11,7 +11,20 @@ function TransactionList({ transactions, deleteTransaction }) {
         transactions.map((transaction) => (
           <div className="transaction-item" key={transaction.id}>
             <span>
-              {transaction.title} - Rs. {Math.abs(transaction.amount)}
+              {transaction.title}
+            </span>
+
+            <span
+              style={{
+                color:
+                  transaction.amount > 0
+                    ? "green"
+                    : "red",
+                fontWeight: "bold",
+              }}
+            >
+              {transaction.amount > 0 ? "+" : "-"} Rs.
+              {Math.abs(transaction.amount)}
             </span>
 
             <button
