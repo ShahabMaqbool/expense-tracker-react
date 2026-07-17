@@ -8,21 +8,27 @@ import TransactionList from "./components/TransactionList";
 function App() {
   const [transactions, setTransactions] = useState([]);
 
+  // Add Transaction
   const addTransaction = (transaction) => {
     setTransactions([...transactions, transaction]);
   };
 
-  // Delete Function
+  // Delete Transaction
   const deleteTransaction = (index) => {
-    const updatedTransactions = transactions.filter((_, i) => i !== index);
+    const updatedTransactions = transactions.filter(
+      (_, i) => i !== index
+    );
+
     setTransactions(updatedTransactions);
   };
 
   return (
     <div className="container">
       <Header />
-      <Balance />
-      <IncomeExpense />
+
+      <Balance transactions={transactions} />
+
+      <IncomeExpense transactions={transactions} />
 
       <AddTransaction addTransaction={addTransaction} />
 

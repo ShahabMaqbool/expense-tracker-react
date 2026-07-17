@@ -1,9 +1,13 @@
+function Balance({ transactions }) {
+  const balance = transactions.reduce(
+    (total, transaction) => total + transaction.amount,
+    0
+  );
 
-function Balance() {
   return (
     <div>
       <h3>Current Balance</h3>
-      <h2>Rs. 0</h2>
+      <h2>Rs. {balance}</h2>
     </div>
   );
 }
