@@ -1,10 +1,24 @@
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 import "./Header.css";
 
 function Header() {
+  const { theme, toggleTheme } =
+    useContext(ThemeContext);
+
   return (
-    <header className="header">
+    <div className="header">
       <h1>💰 Expense Tracker</h1>
-    </header>
+
+      <button
+        className="theme-btn"
+        onClick={toggleTheme}
+      >
+        {theme === "light"
+          ? "🌙 Dark Mode"
+          : "☀️ Light Mode"}
+      </button>
+    </div>
   );
 }
 
