@@ -1,4 +1,7 @@
 import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Header from "./components/Header";
 import Balance from "./components/Balance";
 import IncomeExpense from "./components/IncomeExpense";
@@ -7,22 +10,26 @@ import TransactionList from "./components/TransactionList";
 import ExpenseChart from "./components/ExpenseChart";
 
 function App() {
-  // Load data from Local Storage
+  // Load Local Storage
   const [transactions, setTransactions] = useState(() => {
     const savedTransactions = localStorage.getItem("transactions");
-    return savedTransactions ? JSON.parse(savedTransactions) : [];
+    return savedTransactions
+      ? JSON.parse(savedTransactions)
+      : [];
   });
 
-  // Edit State
-  const [editingTransaction, setEditingTransaction] = useState(null);
+  // Edit Transaction
+  const [editingTransaction, setEditingTransaction] =
+    useState(null);
 
   // Search
   const [search, setSearch] = useState("");
 
   // Category Filter
-  const [filterCategory, setFilterCategory] = useState("All");
+  const [filterCategory, setFilterCategory] =
+    useState("All");
 
-  // Save to Local Storage
+  // Save Local Storage
   useEffect(() => {
     localStorage.setItem(
       "transactions",
@@ -32,19 +39,26 @@ function App() {
 
   // Add Transaction
   const addTransaction = (transaction) => {
-    setTransactions((prev) => [...prev, transaction]);
+    setTransactions((prev) => [
+      ...prev,
+      transaction,
+    ]);
+
+    toast.success("✅ Transaction Added Successfully");
   };
 
   // Delete Transaction
   const deleteTransaction = (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this transaction?"
+      "Delete this transaction?"
     );
 
     if (!confirmDelete) return;
 
     setTransactions((prev) =>
-      prev.filter((transaction) => transaction.id !== id)
+      prev.filter(
+        (transaction) => transaction.id !== id
+      )
     );
 
     if (
@@ -53,19 +67,26 @@ function App() {
     ) {
       setEditingTransaction(null);
     }
+
+    toast.error("🗑 Transaction Deleted");
   };
 
   // Update Transaction
-  const updateTransaction = (updatedTransaction) => {
+  const updateTransaction = (
+    updatedTransaction
+  ) => {
     setTransactions((prev) =>
       prev.map((transaction) =>
-        transaction.id === updatedTransaction.id
+        transaction.id ===
+        updatedTransaction.id
           ? updatedTransaction
           : transaction
       )
     );
 
     setEditingTransaction(null);
+
+    toast.info("✏ Transaction Updated");
   };
 
   // Clear All
@@ -77,50 +98,81 @@ function App() {
     if (!confirmClear) return;
 
     setTransactions([]);
+
     setEditingTransaction(null);
+
+    toast.warn("⚠ All Transactions Deleted");
   };
 
-  // Search + Category Filter
-  const filteredTransactions = transactions.filter(
-    (transaction) => {
-      const matchesSearch = transaction.title
-        .toLowerCase()
-        .includes(search.toLowerCase());
+  // Search + Filter
+  const filteredTransactions =
+    transactions.filter((transaction) => {
+      const matchesSearch =
+        transaction.title
+          .toLowerCase()
+          .includes(search.toLowerCase());
 
       const matchesCategory =
         filterCategory === "All" ||
-        transaction.category === filterCategory;
+        transaction.category ===
+          filterCategory;
 
-      return matchesSearch && matchesCategory;
-    }
-  );
+      return (
+        matchesSearch && matchesCategory
+      );
+    });
 
   // Statistics
-  const totalTransactions = transactions.length;
+  const totalTransactions =
+    transactions.length;
 
-  const incomeCount = transactions.filter(
-    (transaction) => transaction.amount > 0
-  ).length;
+  const incomeCount =
+    transactions.filter(
+      (transaction) =>
+        transaction.amount > 0
+    ).length;
 
-  const expenseCount = transactions.filter(
-    (transaction) => transaction.amount < 0
-  ).length;
+  const expenseCount =
+    transactions.filter(
+      (transaction) =>
+        transaction.amount < 0
+    ).length;
 
   return (
     <div className="container">
+      {/* Toast Notification */}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        theme="colored"
+      />
+
       <Header />
 
-      <Balance transactions={transactions} />
+      <Balance
+        transactions={transactions}
+      />
 
-      <IncomeExpense transactions={transactions} />
+      <IncomeExpense
+        transactions={transactions}
+      />
 
       <AddTransaction
         addTransaction={addTransaction}
-        editingTransaction={editingTransaction}
-        updateTransaction={updateTransaction}
+        editingTransaction={
+          editingTransaction
+        }
+        updateTransaction={
+          updateTransaction
+        }
       />
 
-      {/* Search + Filter */}
+      {/* Search */}
 
       <div className="search-filter">
         <input
@@ -135,7 +187,9 @@ function App() {
         <select
           value={filterCategory}
           onChange={(e) =>
-            setFilterCategory(e.target.value)
+            setFilterCategory(
+              e.target.value
+            )
           }
         >
           <option>All</option>
@@ -144,14 +198,16 @@ function App() {
           <option>Shopping</option>
           <option>Transport</option>
           <option>Bills</option>
-          <option>Entertainment</option>
+          <option>
+            Entertainment
+          </option>
           <option>Health</option>
           <option>Education</option>
           <option>Other</option>
         </select>
       </div>
 
-      {/* Statistics */}
+      {/* Stats */}
 
       <div className="stats">
         <div className="stat-card">
@@ -170,24 +226,34 @@ function App() {
         </div>
       </div>
 
-      {/* Clear All */}
+      {/* Clear */}
 
       {transactions.length > 0 && (
         <button
           className="clear-btn"
-          onClick={clearAllTransactions}
+          onClick={
+            clearAllTransactions
+          }
         >
           Clear All Transactions
         </button>
       )}
 
       <TransactionList
-        transactions={filteredTransactions}
-        deleteTransaction={deleteTransaction}
-        setEditingTransaction={setEditingTransaction}
+        transactions={
+          filteredTransactions
+        }
+        deleteTransaction={
+          deleteTransaction
+        }
+        setEditingTransaction={
+          setEditingTransaction
+        }
       />
 
-      <ExpenseChart transactions={transactions} />
+      <ExpenseChart
+        transactions={transactions}
+      />
     </div>
   );
 }
