@@ -9,24 +9,41 @@ function AddTransaction({
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("income");
+  const [category, setCategory] = useState("Food");
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     if (editingTransaction) {
       setTitle(editingTransaction.title);
       setAmount(Math.abs(editingTransaction.amount));
-
       setType(
         editingTransaction.amount > 0
           ? "income"
           : "expense"
       );
+      setCategory(editingTransaction.category);
+      setDate(editingTransaction.date);
+    } else {
+      setTitle("");
+      setAmount("");
+      setType("income");
+      setCategory("Food");
+      setDate("");
     }
   }, [editingTransaction]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!title || !amount) return;
+    if (
+      !title.trim() ||
+      !amount ||
+      !category ||
+      !date
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
 
     const transaction = {
       id: editingTransaction
@@ -39,6 +56,10 @@ function AddTransaction({
         type === "expense"
           ? -Math.abs(Number(amount))
           : Math.abs(Number(amount)),
+
+      category,
+
+      date,
     };
 
     if (editingTransaction) {
@@ -50,6 +71,8 @@ function AddTransaction({
     setTitle("");
     setAmount("");
     setType("income");
+    setCategory("Food");
+    setDate("");
   };
 
   return (
@@ -63,7 +86,7 @@ function AddTransaction({
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Title"
+          placeholder="Transaction Title"
           value={title}
           onChange={(e) =>
             setTitle(e.target.value)
@@ -76,6 +99,31 @@ function AddTransaction({
           value={amount}
           onChange={(e) =>
             setAmount(e.target.value)
+          }
+        />
+
+        <select
+          value={category}
+          onChange={(e) =>
+            setCategory(e.target.value)
+          }
+        >
+          <option>Food</option>
+          <option>Salary</option>
+          <option>Shopping</option>
+          <option>Transport</option>
+          <option>Bills</option>
+          <option>Entertainment</option>
+          <option>Health</option>
+          <option>Education</option>
+          <option>Other</option>
+        </select>
+
+        <input
+          type="date"
+          value={date}
+          onChange={(e) =>
+            setDate(e.target.value)
           }
         />
 
@@ -105,7 +153,7 @@ function AddTransaction({
           </label>
         </div>
 
-        <button>
+        <button type="submit">
           {editingTransaction
             ? "Update Transaction"
             : "Add Transaction"}
