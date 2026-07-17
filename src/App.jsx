@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Balance from "./components/Balance";
 import IncomeExpense from "./components/IncomeExpense";
@@ -6,14 +6,18 @@ import AddTransaction from "./components/AddTransaction";
 import TransactionList from "./components/TransactionList";
 
 function App() {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState(() => {
+    const savedTransactions = localStorage.getItem("transactions");
 
-  // Add Transaction
+    return savedTransactions
+      ? JSON.parse(savedTransactions)
+      : [];
+  });
+
   const addTransaction = (transaction) => {
     setTransactions([...transactions, transaction]);
   };
 
-  // Delete Transaction
   const deleteTransaction = (index) => {
     const updatedTransactions = transactions.filter(
       (_, i) => i !== index
@@ -21,6 +25,13 @@ function App() {
 
     setTransactions(updatedTransactions);
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      "transactions",
+      JSON.stringify(transactions)
+    );
+  }, [transactions]);
 
   return (
     <div className="container">
