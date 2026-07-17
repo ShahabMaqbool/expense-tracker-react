@@ -12,6 +12,12 @@ function App() {
     setTransactions([...transactions, transaction]);
   };
 
+  // Delete Function
+  const deleteTransaction = (index) => {
+    const updatedTransactions = transactions.filter((_, i) => i !== index);
+    setTransactions(updatedTransactions);
+  };
+
   return (
     <div className="container">
       <Header />
@@ -20,7 +26,10 @@ function App() {
 
       <AddTransaction addTransaction={addTransaction} />
 
-      <TransactionList transactions={transactions} />
+      <TransactionList
+        transactions={transactions}
+        deleteTransaction={deleteTransaction}
+      />
     </div>
   );
 }
