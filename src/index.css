@@ -69,3 +69,115 @@ body.dark button{
 color:white;
 
 }
+
+
+/* ===========================
+   SEARCH & FILTER
+=========================== */
+
+.search-filter{
+display:flex;
+gap:15px;
+margin:20px 0;
+flex-wrap:wrap;
+}
+
+.search-filter input,
+.search-filter select{
+flex:1;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+font-size:15px;
+}
+
+/* ===========================
+   STATS
+=========================== */
+
+.stats{
+display:flex;
+gap:15px;
+margin:20px 0;
+flex-wrap:wrap;
+}
+
+.stat-card{
+flex:1;
+background:white;
+padding:15px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.stat-card h4{
+margin-bottom:10px;
+}
+
+.stat-card p{
+font-size:24px;
+font-weight:bold;
+}
+
+/* ===========================
+   CLEAR BUTTON
+=========================== */
+
+.clear-btn{
+width:100%;
+padding:12px;
+margin-bottom:20px;
+border:none;
+border-radius:8px;
+background:#dc2626;
+color:white;
+font-size:16px;
+cursor:pointer;
+font-weight:bold;
+transition:.3s;
+}
+
+.clear-btn:hover{
+background:#b91c1c;
+}
+
+/* ===========================
+   DARK MODE
+=========================== */
+
+body.light{
+background:#f3f4f6;
+color:#222;
+transition:.3s;
+}
+
+body.dark{
+background:#121212;
+color:white;
+transition:.3s;
+}
+
+body.dark .container{
+background:#1f1f1f;
+}
+
+body.dark .card,
+body.dark .transaction-item,
+body.dark .stat-card,
+body.dark .transaction-form,
+body.dark .empty-state{
+background:#2b2b2b;
+color:white;
+}
+
+body.dark input,
+body.dark select{
+background:#333;
+color:white;
+border-color:#555;
+}
+
+body.dark button{
+color:white;
+}
