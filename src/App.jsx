@@ -9,6 +9,7 @@ import AddTransaction from "./components/AddTransaction";
 import TransactionList from "./components/TransactionList";
 import ExpenseChart from "./components/ExpenseChart";
 import ExportPDF from "./components/ExportPDF";
+import ExportCSV from "./components/ExportCSV";
 
 function App() {
   // Load Local Storage
@@ -256,9 +257,13 @@ function App() {
         }
       />
 
-      <ExpenseChart
-        transactions={transactions}
-      />
+      <ExportPDF
+  transactions={filteredTransactions}
+/>
+
+<ExportCSV
+  transactions={filteredTransactions}
+/>
     </div>
   );
 }
