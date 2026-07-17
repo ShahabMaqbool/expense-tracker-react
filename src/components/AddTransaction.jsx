@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import "./AddTransaction.css";
 
 function AddTransaction({
@@ -24,24 +25,35 @@ function AddTransaction({
       setCategory(editingTransaction.category);
       setDate(editingTransaction.date);
     } else {
-      setTitle("");
-      setAmount("");
-      setType("income");
-      setCategory("Food");
-      setDate("");
+      resetForm();
     }
   }, [editingTransaction]);
+
+  const resetForm = () => {
+    setTitle("");
+    setAmount("");
+    setType("income");
+    setCategory("Food");
+    setDate("");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (
-      !title.trim() ||
-      !amount ||
-      !category ||
-      !date
-    ) {
-      alert("Please fill all fields");
+    // Validation
+
+    if (title.trim() === "") {
+      toast.error("Please enter a title");
+      return;
+    }
+
+    if (!amount || Number(amount) <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    if (!date) {
+      toast.error("Please select a date");
       return;
     }
 
@@ -50,7 +62,7 @@ function AddTransaction({
         ? editingTransaction.id
         : Date.now(),
 
-      title,
+      title: title.trim(),
 
       amount:
         type === "expense"
@@ -68,11 +80,7 @@ function AddTransaction({
       addTransaction(transaction);
     }
 
-    setTitle("");
-    setAmount("");
-    setType("income");
-    setCategory("Food");
-    setDate("");
+    resetForm();
   };
 
   return (
@@ -84,6 +92,8 @@ function AddTransaction({
       </h3>
 
       <form onSubmit={handleSubmit}>
+        {/* Title */}
+
         <input
           type="text"
           placeholder="Transaction Title"
@@ -93,6 +103,8 @@ function AddTransaction({
           }
         />
 
+        {/* Amount */}
+
         <input
           type="number"
           placeholder="Amount"
@@ -101,6 +113,8 @@ function AddTransaction({
             setAmount(e.target.value)
           }
         />
+
+        {/* Category */}
 
         <select
           value={category}
@@ -119,6 +133,8 @@ function AddTransaction({
           <option>Other</option>
         </select>
 
+        {/* Date */}
+
         <input
           type="date"
           value={date}
@@ -126,6 +142,8 @@ function AddTransaction({
             setDate(e.target.value)
           }
         />
+
+        {/* Income / Expense */}
 
         <div className="radio-group">
           <label>
