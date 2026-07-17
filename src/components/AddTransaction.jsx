@@ -1,15 +1,20 @@
-
 import { useState } from "react";
 
-function AddTransaction() {
+function AddTransaction({ addTransaction }) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Title:", title);
-    console.log("Amount:", amount);
+    if (title === "" || amount === "") return;
+
+    const transaction = {
+      title,
+      amount: Number(amount),
+    };
+
+    addTransaction(transaction);
 
     setTitle("");
     setAmount("");
@@ -40,9 +45,7 @@ function AddTransaction() {
         <br />
         <br />
 
-        <button type="submit">
-          Add Transaction
-        </button>
+        <button>Add Transaction</button>
       </form>
     </div>
   );
