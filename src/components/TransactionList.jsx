@@ -5,41 +5,53 @@ function TransactionList({
   deleteTransaction,
   setEditingTransaction,
 }) {
+  if (transactions.length === 0) {
+    return (
+      <div className="transaction-list">
+        <h3>Transaction History</h3>
+        <p className="empty-message">No Transactions Found</p>
+      </div>
+    );
+  }
+
   return (
     <div className="transaction-list">
       <h3>Transaction History</h3>
 
-      {transactions.length === 0 ? (
-        <p>No Transactions Yet</p>
-      ) : (
-        transactions.map((transaction) => (
-          <div
-            className="transaction-item"
-            key={transaction.id}
-          >
-            <div>
-              <h4>{transaction.title}</h4>
+      {transactions.map((transaction) => (
+        <div
+          className={`transaction-item ${
+            transaction.amount > 0 ? "income-item" : "expense-item"
+          }`}
+          key={transaction.id}
+        >
+          <div className="transaction-left">
+            <h4>{transaction.title}</h4>
 
-              <p
-                style={{
-                  color:
-                    transaction.amount > 0
-                      ? "green"
-                      : "red",
-                }}
-              >
-                {transaction.amount > 0 ? "+" : "-"} Rs.
-                {Math.abs(transaction.amount)}
-              </p>
-            </div>
+            <span className="category-badge">
+              {transaction.category}
+            </span>
 
-            <div
-              style={{
-                display: "flex",
-                gap: "10px",
-              }}
+            <p className="transaction-date">
+              📅 {transaction.date}
+            </p>
+          </div>
+
+          <div className="transaction-right">
+            <h3
+              className={
+                transaction.amount > 0
+                  ? "income-text"
+                  : "expense-text"
+              }
             >
+              {transaction.amount > 0 ? "+" : "-"} Rs.
+              {Math.abs(transaction.amount)}
+            </h3>
+
+            <div className="button-group">
               <button
+                className="edit-btn"
                 onClick={() =>
                   setEditingTransaction(transaction)
                 }
@@ -48,6 +60,7 @@ function TransactionList({
               </button>
 
               <button
+                className="delete-btn"
                 onClick={() =>
                   deleteTransaction(transaction.id)
                 }
@@ -56,8 +69,8 @@ function TransactionList({
               </button>
             </div>
           </div>
-        ))
-      )}
+        </div>
+      ))}
     </div>
   );
 }
