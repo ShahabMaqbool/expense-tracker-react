@@ -1,28 +1,28 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.search-filter{
+display:flex;
+gap:15px;
+margin:30px 0;
 }
 
-body {
-  background: #f3f4f6;
-  font-family: Arial, Helvetica, sans-serif;
+.search-filter input,
+.search-filter select{
+flex:1;
+padding:12px;
+font-size:15px;
+border:1px solid #ccc;
+border-radius:8px;
+outline:none;
 }
 
-.container {
-  max-width: 550px;
-  margin: 40px auto;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.1);
+.search-filter input:focus,
+.search-filter select:focus{
+border-color:#2563eb;
 }
 
-@media (max-width:600px){
+@media(max-width:600px){
 
-.container{
-margin:20px;
-padding:20px;
+.search-filter{
+flex-direction:column;
 }
 
 }

@@ -13,6 +13,10 @@ function App() {
 
   const [editingTransaction, setEditingTransaction] = useState(null);
 
+  // New States
+  const [search, setSearch] = useState("");
+  const [filterCategory, setFilterCategory] = useState("All");
+
   useEffect(() => {
     localStorage.setItem(
       "transactions",
@@ -28,22 +32,40 @@ function App() {
   // Delete
   const deleteTransaction = (id) => {
     setTransactions(
-      transactions.filter((item) => item.id !== id)
+      transactions.filter(
+        (transaction) => transaction.id !== id
+      )
     );
   };
 
   // Update
   const updateTransaction = (updatedTransaction) => {
     setTransactions(
-      transactions.map((item) =>
-        item.id === updatedTransaction.id
+      transactions.map((transaction) =>
+        transaction.id === updatedTransaction.id
           ? updatedTransaction
-          : item
+          : transaction
       )
     );
 
     setEditingTransaction(null);
   };
+
+  // Search + Filter
+  const filteredTransactions = transactions.filter(
+    (transaction) => {
+      const matchesSearch =
+        transaction.title
+          .toLowerCase()
+          .includes(search.toLowerCase());
+
+      const matchesCategory =
+        filterCategory === "All" ||
+        transaction.category === filterCategory;
+
+      return matchesSearch && matchesCategory;
+    }
+  );
 
   return (
     <div className="container">
@@ -59,8 +81,39 @@ function App() {
         updateTransaction={updateTransaction}
       />
 
+      <div className="search-filter">
+
+        <input
+          type="text"
+          placeholder="Search Transaction..."
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+        />
+
+        <select
+          value={filterCategory}
+          onChange={(e) =>
+            setFilterCategory(e.target.value)
+          }
+        >
+          <option>All</option>
+          <option>Food</option>
+          <option>Salary</option>
+          <option>Shopping</option>
+          <option>Transport</option>
+          <option>Bills</option>
+          <option>Entertainment</option>
+          <option>Health</option>
+          <option>Education</option>
+          <option>Other</option>
+        </select>
+
+      </div>
+
       <TransactionList
-        transactions={transactions}
+        transactions={filteredTransactions}
         deleteTransaction={deleteTransaction}
         setEditingTransaction={setEditingTransaction}
       />
