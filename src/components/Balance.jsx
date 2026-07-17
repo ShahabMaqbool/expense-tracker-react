@@ -1,3 +1,5 @@
+import "./Balance.css";
+
 function Balance({ transactions }) {
   const balance = transactions.reduce(
     (total, transaction) => total + transaction.amount,
@@ -5,7 +7,7 @@ function Balance({ transactions }) {
   );
 
   return (
-    <div>
+    <div className="balance">
       <h3>Current Balance</h3>
       <h2>Rs. {balance}</h2>
     </div>

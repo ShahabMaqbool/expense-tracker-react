@@ -1,3 +1,5 @@
+import "./IncomeExpense.css";
+
 function IncomeExpense({ transactions }) {
   const income = transactions
     .filter((transaction) => transaction.amount > 0)
@@ -8,16 +10,18 @@ function IncomeExpense({ transactions }) {
     .reduce((total, transaction) => total + Math.abs(transaction.amount), 0);
 
   return (
-    <div>
-      <div>
+    <div className="income-expense">
+
+      <div className="card income">
         <h3>Income</h3>
-        <p>Rs. {income}</p>
+        <h2>Rs. {income}</h2>
       </div>
 
-      <div>
+      <div className="card expense">
         <h3>Expense</h3>
-        <p>Rs. {expense}</p>
+        <h2>Rs. {expense}</h2>
       </div>
+
     </div>
   );
 }

@@ -1,0 +1,31 @@
+
+.income-expense {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card {
+  flex: 1;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,.1);
+}
+
+.income {
+  border-top: 5px solid #2ecc71;
+}
+
+.expense {
+  border-top: 5px solid #e74c3c;
+}
+
+.income h2 {
+  color: #2ecc71;
+}
+
+.expense h2 {
+  color: #e74c3c;
+}

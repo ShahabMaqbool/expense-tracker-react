@@ -1,0 +1,14 @@
+
+.balance {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.balance h3 {
+  color: #555;
+}
+
+.balance h2 {
+  font-size: 38px;
+  color: #222;
+}
