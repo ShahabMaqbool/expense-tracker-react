@@ -4,6 +4,7 @@ import Balance from "./components/Balance";
 import IncomeExpense from "./components/IncomeExpense";
 import AddTransaction from "./components/AddTransaction";
 import TransactionList from "./components/TransactionList";
+import ExpenseChart from "./components/ExpenseChart";
 
 function App() {
   // Load data from Local Storage
@@ -185,6 +186,8 @@ function App() {
         deleteTransaction={deleteTransaction}
         setEditingTransaction={setEditingTransaction}
       />
+
+      <ExpenseChart transactions={transactions} />
     </div>
   );
 }
