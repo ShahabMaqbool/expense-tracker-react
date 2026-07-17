@@ -9,7 +9,11 @@ function TransactionList({
     return (
       <div className="transaction-list">
         <h3>Transaction History</h3>
-        <p className="empty-message">No Transactions Found</p>
+
+        <div className="empty-state">
+          <h4>No Transactions Found</h4>
+          <p>Add your first transaction to get started.</p>
+        </div>
       </div>
     );
   }
@@ -20,32 +24,40 @@ function TransactionList({
 
       {transactions.map((transaction) => (
         <div
-          className={`transaction-item ${
-            transaction.amount > 0 ? "income-item" : "expense-item"
-          }`}
           key={transaction.id}
+          className={`transaction-item ${
+            transaction.amount >= 0
+              ? "income-item"
+              : "expense-item"
+          }`}
         >
+          {/* Left Section */}
+
           <div className="transaction-left">
             <h4>{transaction.title}</h4>
 
-            <span className="category-badge">
-              {transaction.category}
-            </span>
+            <div className="transaction-meta">
+              <span className="category-badge">
+                {transaction.category}
+              </span>
 
-            <p className="transaction-date">
-              📅 {transaction.date}
-            </p>
+              <span className="transaction-date">
+                📅 {transaction.date}
+              </span>
+            </div>
           </div>
+
+          {/* Right Section */}
 
           <div className="transaction-right">
             <h3
               className={
-                transaction.amount > 0
+                transaction.amount >= 0
                   ? "income-text"
                   : "expense-text"
               }
             >
-              {transaction.amount > 0 ? "+" : "-"} Rs.
+              {transaction.amount >= 0 ? "+" : "-"} Rs.{" "}
               {Math.abs(transaction.amount)}
             </h3>
 
@@ -56,7 +68,7 @@ function TransactionList({
                   setEditingTransaction(transaction)
                 }
               >
-                Edit
+                ✏️ Edit
               </button>
 
               <button
@@ -65,7 +77,7 @@ function TransactionList({
                   deleteTransaction(transaction.id)
                 }
               >
-                Delete
+                🗑 Delete
               </button>
             </div>
           </div>
