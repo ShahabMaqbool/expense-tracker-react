@@ -8,6 +8,7 @@ import IncomeExpense from "./components/IncomeExpense";
 import AddTransaction from "./components/AddTransaction";
 import TransactionList from "./components/TransactionList";
 import ExpenseChart from "./components/ExpenseChart";
+import ExportPDF from "./components/ExportPDF";
 
 function App() {
   // Load Local Storage
@@ -238,6 +239,10 @@ function App() {
           Clear All Transactions
         </button>
       )}
+
+      <ExportPDF
+  transactions={filteredTransactions}
+/>
 
       <TransactionList
         transactions={
