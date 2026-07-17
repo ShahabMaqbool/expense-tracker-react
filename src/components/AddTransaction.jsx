@@ -1,28 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./AddTransaction.css";
 
-function AddTransaction({ addTransaction }) {
+function AddTransaction({
+  addTransaction,
+  editingTransaction,
+  updateTransaction,
+}) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("income");
 
+  useEffect(() => {
+    if (editingTransaction) {
+      setTitle(editingTransaction.title);
+      setAmount(Math.abs(editingTransaction.amount));
+
+      setType(
+        editingTransaction.amount > 0
+          ? "income"
+          : "expense"
+      );
+    }
+  }, [editingTransaction]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (title.trim() === "" || amount === "") {
-      alert("Please fill all fields.");
-      return;
-    }
+    if (!title || !amount) return;
 
     const transaction = {
+      id: editingTransaction
+        ? editingTransaction.id
+        : Date.now(),
+
       title,
+
       amount:
         type === "expense"
           ? -Math.abs(Number(amount))
           : Math.abs(Number(amount)),
     };
 
-    addTransaction(transaction);
+    if (editingTransaction) {
+      updateTransaction(transaction);
+    } else {
+      addTransaction(transaction);
+    }
 
     setTitle("");
     setAmount("");
@@ -31,22 +54,29 @@ function AddTransaction({ addTransaction }) {
 
   return (
     <div className="transaction-form">
-      <h3>Add New Transaction</h3>
+      <h3>
+        {editingTransaction
+          ? "Edit Transaction"
+          : "Add Transaction"}
+      </h3>
 
       <form onSubmit={handleSubmit}>
-
         <input
           type="text"
-          placeholder="Enter Title"
+          placeholder="Title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) =>
+            setTitle(e.target.value)
+          }
         />
 
         <input
           type="number"
-          placeholder="Enter Amount"
+          placeholder="Amount"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) =>
+            setAmount(e.target.value)
+          }
         />
 
         <div className="radio-group">
@@ -55,7 +85,9 @@ function AddTransaction({ addTransaction }) {
               type="radio"
               value="income"
               checked={type === "income"}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) =>
+                setType(e.target.value)
+              }
             />
             Income
           </label>
@@ -65,16 +97,19 @@ function AddTransaction({ addTransaction }) {
               type="radio"
               value="expense"
               checked={type === "expense"}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) =>
+                setType(e.target.value)
+              }
             />
             Expense
           </label>
         </div>
 
-        <button type="submit">
-          Add Transaction
+        <button>
+          {editingTransaction
+            ? "Update Transaction"
+            : "Add Transaction"}
         </button>
-
       </form>
     </div>
   );

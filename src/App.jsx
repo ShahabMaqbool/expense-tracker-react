@@ -7,24 +7,11 @@ import TransactionList from "./components/TransactionList";
 
 function App() {
   const [transactions, setTransactions] = useState(() => {
-    const savedTransactions = localStorage.getItem("transactions");
-
-    return savedTransactions
-      ? JSON.parse(savedTransactions)
-      : [];
+    const saved = localStorage.getItem("transactions");
+    return saved ? JSON.parse(saved) : [];
   });
 
-  const addTransaction = (transaction) => {
-    setTransactions([...transactions, transaction]);
-  };
-
-  const deleteTransaction = (index) => {
-    const updatedTransactions = transactions.filter(
-      (_, i) => i !== index
-    );
-
-    setTransactions(updatedTransactions);
-  };
+  const [editingTransaction, setEditingTransaction] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(
@@ -32,6 +19,31 @@ function App() {
       JSON.stringify(transactions)
     );
   }, [transactions]);
+
+  // Add
+  const addTransaction = (transaction) => {
+    setTransactions([...transactions, transaction]);
+  };
+
+  // Delete
+  const deleteTransaction = (id) => {
+    setTransactions(
+      transactions.filter((item) => item.id !== id)
+    );
+  };
+
+  // Update
+  const updateTransaction = (updatedTransaction) => {
+    setTransactions(
+      transactions.map((item) =>
+        item.id === updatedTransaction.id
+          ? updatedTransaction
+          : item
+      )
+    );
+
+    setEditingTransaction(null);
+  };
 
   return (
     <div className="container">
@@ -41,11 +53,16 @@ function App() {
 
       <IncomeExpense transactions={transactions} />
 
-      <AddTransaction addTransaction={addTransaction} />
+      <AddTransaction
+        addTransaction={addTransaction}
+        editingTransaction={editingTransaction}
+        updateTransaction={updateTransaction}
+      />
 
       <TransactionList
         transactions={transactions}
         deleteTransaction={deleteTransaction}
+        setEditingTransaction={setEditingTransaction}
       />
     </div>
   );
