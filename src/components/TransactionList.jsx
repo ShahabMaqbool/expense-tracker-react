@@ -1,25 +1,24 @@
+import "./TransactionList.css";
+
 function TransactionList({ transactions, deleteTransaction }) {
   return (
-    <div>
+    <div className="transaction-list">
       <h3>Transaction History</h3>
 
       {transactions.length === 0 ? (
         <p>No Transactions Yet</p>
       ) : (
-        transactions.map((transaction, index) => (
-          <div
-            key={index}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginBottom: "10px",
-            }}
-          >
+        transactions.map((transaction) => (
+          <div className="transaction-item" key={transaction.id}>
             <span>
-              {transaction.title} - Rs.{transaction.amount}
+              {transaction.title} - Rs. {Math.abs(transaction.amount)}
             </span>
 
-            <button onClick={() => deleteTransaction(index)}>
+            <button
+              onClick={() =>
+                deleteTransaction(transaction.id)
+              }
+            >
               Delete
             </button>
           </div>
