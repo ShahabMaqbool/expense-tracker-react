@@ -31,6 +31,9 @@ function App() {
   const [filterCategory, setFilterCategory] =
     useState("All");
 
+  const [fromDate, setFromDate] = useState("");
+const [toDate, setToDate] = useState("");
+
   // Save Local Storage
   useEffect(() => {
     localStorage.setItem(
@@ -107,38 +110,48 @@ function App() {
   };
 
   // Search + Filter
-  const filteredTransactions =
-    transactions.filter((transaction) => {
-      const matchesSearch =
-        transaction.title
-          .toLowerCase()
-          .includes(search.toLowerCase());
+  const filteredTransactions = transactions.filter((transaction) => {
+  const matchesSearch = transaction.title
+    .toLowerCase()
+    .includes(search.toLowerCase());
 
-      const matchesCategory =
-        filterCategory === "All" ||
-        transaction.category ===
-          filterCategory;
+  const matchesCategory =
+    filterCategory === "All" ||
+    transaction.category === filterCategory;
 
-      return (
-        matchesSearch && matchesCategory
-      );
-    });
+  const transactionDate = new Date(transaction.date);
+
+  const matchesFrom =
+    !fromDate ||
+    transactionDate >= new Date(fromDate);
+
+  const matchesTo =
+    !toDate ||
+    transactionDate <= new Date(toDate);
+
+
+  return (
+    matchesSearch &&
+    matchesCategory &&
+    matchesFrom &&
+    matchesTo
+  );
+});
+
+
+
+
 
   // Statistics
-  const totalTransactions =
-    transactions.length;
+ const totalTransactions = filteredTransactions.length;
 
-  const incomeCount =
-    transactions.filter(
-      (transaction) =>
-        transaction.amount > 0
-    ).length;
+const incomeCount = filteredTransactions.filter(
+  (transaction) => transaction.amount > 0
+).length;
 
-  const expenseCount =
-    transactions.filter(
-      (transaction) =>
-        transaction.amount < 0
-    ).length;
+const expenseCount = filteredTransactions.filter(
+  (transaction) => transaction.amount < 0
+).length;
 
   return (
     <div className="container">
@@ -209,6 +222,20 @@ function App() {
         </select>
       </div>
 
+      <div className="date-filter">
+  <input
+    type="date"
+    value={fromDate}
+    onChange={(e) => setFromDate(e.target.value)}
+  />
+
+  <input
+    type="date"
+    value={toDate}
+    onChange={(e) => setToDate(e.target.value)}
+  />
+</div>
+
       {/* Stats */}
 
       <div className="stats">
@@ -241,27 +268,21 @@ function App() {
         </button>
       )}
 
-      <ExportPDF
-  transactions={filteredTransactions}
-/>
-
-      <TransactionList
-        transactions={
-          filteredTransactions
-        }
-        deleteTransaction={
-          deleteTransaction
-        }
-        setEditingTransaction={
-          setEditingTransaction
-        }
-      />
-
-      <ExportPDF
+<ExportPDF
   transactions={filteredTransactions}
 />
 
 <ExportCSV
+  transactions={filteredTransactions}
+/>
+
+<TransactionList
+  transactions={filteredTransactions}
+  deleteTransaction={deleteTransaction}
+  setEditingTransaction={setEditingTransaction}
+/>
+
+<ExpenseChart
   transactions={filteredTransactions}
 />
     </div>

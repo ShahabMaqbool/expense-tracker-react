@@ -232,3 +232,26 @@ transition:.3s;
 .csv-btn:hover{
 background:#1d4ed8;
 }
+
+
+.date-filter{
+display:flex;
+gap:15px;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.date-filter input{
+flex:1;
+padding:10px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:15px;
+}
+
+
+body.dark .date-filter input{
+background:#333;
+color:white;
+border-color:#555;
+}
